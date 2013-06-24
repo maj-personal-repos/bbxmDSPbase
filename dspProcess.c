@@ -7,13 +7,13 @@
 
 int dspBlockProcess(short *outputBuffer, short *inputBuffer, buffer * xn, int samples){
 	
-	//memcpy((char *)outputBuffer, (char *)inputBuffer, 2*samples);
+	memcpy((char *)outputBuffer, (char *)inputBuffer, 2*samples);
 	
-	int i;
-	for (i=0; i < samples; i+=2){
-		push(xn,(float)inputBuffer[i]);
-		outputBuffer[i] = (short) pop(xn);
-	}
+	//int i;
+	//for (i=0; i < samples; i+=2){
+		//push(xn,(float)inputBuffer[i]);
+		//outputBuffer[i] = (short) pop(xn);
+	//}
 	
 	return DSP_PROCESS_SUCCESS;
 }
