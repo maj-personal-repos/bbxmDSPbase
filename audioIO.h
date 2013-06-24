@@ -26,7 +26,7 @@
 
 //*  Parameters for DSP thread execution **
 // Should be a power of 2, i.e. 2^n, and no less than 512
-#define     BLOCKSIZE        512
+#define     BLOCKSIZE        8192
 
 // The levels of initialization for initMask
 #define     INPUT_ALSA_INITIALIZED      0x1
