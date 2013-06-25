@@ -80,15 +80,14 @@ void *ioProcessing(void *envByRef, void *apPtr){
     int i;
     
     // Define circular buffers
-    buffer xn;
-    initBuffer(&xn);
+    buffer *xn = malloc(sizeof(buffer));
+    initBuffer(xn);
     
     memset((*ap).outputBuffer, 0, (*ap).blksize);		// Clear the output buffer
 
     DBG( "Starting IO Processing...\n" );
 
-    //dspBlockProcess((short *)(*ap).outputBuffer, (short *)(*ap).outputBuffer, &xn, (*ap).blksize/2);
-    dspBlockProcess((short *)(*ap).outputBuffer, (short *)(*ap).outputBuffer, (*ap).blksize/2);
+    dspBlockProcess((short *)(*ap).outputBuffer, (short *)(*ap).outputBuffer, xn, (*ap).blksize/2);
 
     DBG( "Entering dspThread processing loop...\n" );
 
@@ -119,8 +118,7 @@ void *ioProcessing(void *envByRef, void *apPtr){
 		// Audio process
 		//  passing the data as short since we are processing 16-bit audio.
 		//	memcpy((*ap).outputBuffer, (*ap).inputBuffer, (*ap).blksize);
-		//dspBlockProcess((short *)(*ap).outputBuffer, (short *)(*ap).inputBuffer, &xn, (*ap).blksize/2);
-		dspBlockProcess((short *)(*ap).outputBuffer, (short *)(*ap).inputBuffer, (*ap).blksize/2);
+		dspBlockProcess((short *)(*ap).outputBuffer, (short *)(*ap).inputBuffer, xn, (*ap).blksize/2);
 
 		// Write output buffer into ALSA output device
 		errcnt = 0;	

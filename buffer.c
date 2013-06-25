@@ -1,6 +1,7 @@
 #include "buffer.h"
 
 void initBuffer(buffer* buffer){
+	buffer->buff = malloc(BUFF_SIZE * sizeof(int));
 	int i;
 	buffer->index = 0;
 	for(i=0;i<BUFF_SIZE;i++){

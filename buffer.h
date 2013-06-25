@@ -6,7 +6,8 @@
 #define BUFF_SIZE_MASK (BUFF_SIZE-1)
 
 typedef struct buffer{
-	float buff[BUFF_SIZE];
+	//float buff[BUFF_SIZE];
+	int *buff;
 	unsigned int index;
 }buffer;
 
