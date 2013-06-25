@@ -55,7 +55,8 @@ LIB_DSP_OBJS := $(LIB_SRCS:%.c=dsp_lib/%.o)
 #   Name of executable
 #   ----------------------------------------------------------------------------
 
-EXEC_NAME := dspThru
+EXEC_NAME := dspThruARM
+EXEC_NAME_DSP := dspThruDSP
 
 .PHONY : gpp_exec gpp_lib gpp_clean all clean
 
@@ -90,6 +91,39 @@ gpp_lib/.created:
 gpp_clean:
 	@rm -Rf $(EXEC_NAME) $(EXEC_NAME).lib
 	@rm -Rf gpp gpp_lib
+	
+#   ----------------------------------------------------------------------------
+#   Rules for build and ARM/DSP (dsp) target 
+#   ----------------------------------------------------------------------------
+dsp_exec: dsp/.created dsp_lib $(EXEC_DSP_OBJS)
+	$(ARM_CC) $(ARM_LDFLAGS) $(CINCLUDES) -o $(EXEC_NAME_DSP) $(EXEC_DSP_OBJS) \
+			$(EXEC_NAME_DSP).lib
+	@echo "=================="
+	@echo "Built for:"
+	@echo "  ARM: $(EXEC_SRCS)"
+	@echo "  DSP: $(LIB_SRCS)"
+	@echo "=================="
+
+dsp_lib: dsp_lib/.created $(LIB_DSP_OBJS)
+	$(C6RUN_AR) $(C6RUN_ARFLAGS) $(EXEC_NAME_DSP).lib $(LIB_DSP_OBJS)
+
+dsp/%.o : %.c
+	$(ARM_CC) $(ARM_CFLAGS) $(CINCLUDES) -o $@ $<
+  
+dsp_lib/%.o : %.c
+	$(C6RUN_CC) $(C6RUN_CFLAGS) $(CINCLUDES) -o $@ $<
+
+dsp/.created:
+	@mkdir -p dsp
+	@touch dsp/.created
+
+dsp_lib/.created:
+	@mkdir -p dsp_lib
+	@touch dsp_lib/.created
+
+dsp_clean:
+	@rm -Rf $(EXEC_NAME_DSP) $(EXEC_NAME_DSP).lib
+	@rm -Rf dsp dsp_lib
 	
 # *****************************************************************************
 #
