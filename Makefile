@@ -62,7 +62,7 @@ EXEC_NAME_DSP := dspThruDSP
 
 all: gpp_exec
 
-clean: gpp_clean
+clean: gpp_clean dsp_clean
 
 #   ----------------------------------------------------------------------------
 #   Rules for build and ARM (gpp) only target 
