@@ -43,6 +43,7 @@ C6RUN_ARFLAGS = rcs --C6Run:replace_malloc
 #   ----------------------------------------------------------------------------
 # List the files to run on the ARM here
 EXEC_SRCS := main.c audioIO.c dspThread.c
+EXEC_ARM_OBJS := $(EXEC_SRCS:%.c=gpp/%.o)
 EXEC_DSP_OBJS := $(EXEC_SRCS:%.c=dsp/%.o)
 
 # List the files to run on the DSP here
