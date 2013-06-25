@@ -3,10 +3,10 @@
 #include <string.h>
 
 #include "dspProcess.h"
-#include "buffer.h"
+//#include "buffer.h"
 
-int dspBlockProcess(short *outputBuffer, short *inputBuffer, buffer * xn, int samples){
-	
+//int dspBlockProcess(short *outputBuffer, short *inputBuffer, buffer *xn, int samples){
+int dspBlockProcess(short *outputBuffer, short *inputBuffer, int samples){	
 	memcpy((char *)outputBuffer, (char *)inputBuffer, 2*samples);
 	
 	//int i;
