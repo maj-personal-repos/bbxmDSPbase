@@ -7,13 +7,13 @@
 
 typedef struct buffer{
 	//float buff[BUFF_SIZE];
-	int *buff;
+	short *buff;
 	unsigned int index;
 }buffer;
 
 void initBuffer(buffer* buffer);
-void push(buffer* buffer,float value);
-float pop(buffer* buffer);
-float readn(buffer* buffer, int Xn);
+void push(buffer* buffer,short value);
+short pop(buffer* buffer);
+short readn(buffer* buffer, int Xn);
 
 #endif

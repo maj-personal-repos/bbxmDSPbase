@@ -36,21 +36,19 @@ void *dsp_thread_start( void *envByRef )
     void * status = DSP_THREAD_SUCCESS; // < see above >
     
     // Define audio paramters
-    audio_params ap = {0};
-    ap.initMask = 0x0;
-    // minimum block size is 
-    ap.exact_bufsize = BLOCKSIZE/BYTESPERFRAME;
+    audio_params ap = {0}; // initialize ap
+    ap.initMask = 0x0; // set init mask to 0x0
+    ap.exact_bufsize = BLOCKSIZE/BYTESPERFRAME;// set buffer size
     ap.pcm_capture_handle = NULL;
     ap.pcm_output_handle = NULL;
-    ap.blksize = BLOCKSIZE;
-    ap.right_gain = RIGHT_GAIN;
-    ap.left_gain = LEFT_GAIN;
-    ap.sample_rate = SAMPLE_RATE;
+    ap.blksize = BLOCKSIZE; // set block size
+    ap.right_gain = RIGHT_GAIN; // set left channel gain
+    ap.left_gain = LEFT_GAIN; // set right channel gain
+    ap.sample_rate = SAMPLE_RATE; // set sampling rate
     ap.inputBuffer = NULL;
     ap.outputBuffer = NULL;
     
     // Setup audio codec and I/O buffers
-    
     if( audio_io_setup( (void *) &ap ) == AUDIO_FAILURE )
     {
         ERR( "Audio_input_setup failed in dsp_thread_start\n\n" );
@@ -67,30 +65,33 @@ void *dsp_thread_start( void *envByRef )
         status = DSP_THREAD_FAILURE;
     }
     
+    // Finish
     return status;
 }
 
 void *ioProcessing(void *envByRef, void *apPtr){
     
+    // Key variables for DSP
     void * status = DSP_THREAD_SUCCESS;
-    audio_params *ap = apPtr;
-    dsp_thread_env *envPtr = envByRef;
-    int err;
-    int errcnt =0;
+    audio_params *ap = apPtr; // Gets the audio parameters
+    dsp_thread_env *envPtr = envByRef; // Gets the dsp thread environment
+    int err; // for capturing errors
+    int errcnt =0; // for capturing errors
     int i;
     
-    // Define circular buffers
-    buffer *xn = malloc(sizeof(buffer));
-    initBuffer(xn);
+    buffer *xn = malloc(sizeof(buffer)); // Define circular buffers and allocate memor
+    initBuffer(xn); // Initialize circular buffer
     
-    memset((*ap).outputBuffer, 0, (*ap).blksize);		// Clear the output buffer
+    memset((*ap).outputBuffer, 0, (*ap).blksize); // Clear the output buffer
 
     DBG( "Starting IO Processing...\n" );
 
+	// Process a block just to start the DSP and skip the first frame
     dspBlockProcess((short *)(*ap).outputBuffer, (short *)(*ap).outputBuffer, xn, (*ap).blksize/2);
 
     DBG( "Entering dspThread processing loop...\n" );
 
+	// Read capture buffer from ALSA input device (just to get things going) 
     while( snd_pcm_readi((*ap).pcm_capture_handle, (*ap).inputBuffer, (*ap).exact_bufsize) < 0 ){
 		snd_pcm_prepare((*ap).pcm_capture_handle);
 		ERR( "<<<<<<<<<<<<<<< Buffer Prime Overrun >>>>>>>>>>>>>>>\n");
@@ -99,6 +100,7 @@ void *ioProcessing(void *envByRef, void *apPtr){
 
     memset((*ap).outputBuffer, 0, (*ap).blksize);		// Clear the output buffer
     
+    // Write output buffer into ALSA output device (just to get things going)
     for(i=0; i<2; i++) {
 	    while ((err = snd_pcm_writei((*ap).pcm_output_handle, (*ap).outputBuffer, (*ap).exact_bufsize)) < 0){
 			snd_pcm_prepare((*ap).pcm_output_handle);
@@ -106,6 +108,7 @@ void *ioProcessing(void *envByRef, void *apPtr){
 		}
 	}
 	
+	// begin DSP main loop
     while( !(*envPtr).quit ) {
 	
 		// Read capture buffer from ALSA input device
@@ -114,10 +117,9 @@ void *ioProcessing(void *envByRef, void *apPtr){
 			ERR( "<<<<<<<<<<<<<<< Buffer Prime Overrun >>>>>>>>>>>>>>>\n");
 			ERR( "Error reading the data from file descriptor %d\n", (int) (*ap).pcm_capture_handle );
 		}
-	
+		
 		// Audio process
 		//  passing the data as short since we are processing 16-bit audio.
-		//	memcpy((*ap).outputBuffer, (*ap).inputBuffer, (*ap).blksize);
 		dspBlockProcess((short *)(*ap).outputBuffer, (short *)(*ap).inputBuffer, xn, (*ap).blksize/2);
 
 		// Write output buffer into ALSA output device
