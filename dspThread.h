@@ -11,6 +11,7 @@
 typedef  struct  dsp_thread_env
 {
     int quit;                // Thread will run as long as quit = 0
+    int done;				 // To capture when the DSP is done.
 } dsp_thread_env;
 
 // dspthread function prototypes

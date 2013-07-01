@@ -65,6 +65,8 @@ void *dsp_thread_start( void *envByRef )
         status = DSP_THREAD_FAILURE;
     }
     
+    envPtr->done = 1;
+    
     // Finish
     return status;
 }

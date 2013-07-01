@@ -18,7 +18,7 @@ ARM_CFLAGS += -std=gnu99 \
 -D_DEBUG_ \
 -c -O3
 ARM_LDFLAGS = $(LDFLAGS)
-ARM_LDFLAGS+= -lm -lpthread -lasound
+ARM_LDFLAGS+= -lm -lpthread -lasound -lncurses
 ARM_ARFLAGS = rcs
 
 #   ----------------------------------------------------------------------------
