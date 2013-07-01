@@ -25,7 +25,7 @@
 #define     RIGHT_GAIN       100
 
 //*  Parameters for DSP thread execution **
-// Should be a power of 2, i.e. 2^n, and no less than 512
+// Should be a power of 2, i.e. 2^n, and no less than 4096
 #define     BLOCKSIZE        4096
 
 // The levels of initialization for initMask
