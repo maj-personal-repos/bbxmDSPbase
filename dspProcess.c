@@ -34,16 +34,16 @@ short fir_filter(buffer *xn){
 // core dsp block processing
 int dspBlockProcess(short *outputBuffer, short *inputBuffer, buffer *xn, int samples){
 	
-	//memcpy((char *)outputBuffer, (char *)inputBuffer, 2*samples); // passthru
+	memcpy((char *)outputBuffer, (char *)inputBuffer, 2*samples); // passthru
 	
-	int i;
-	for (i=0; i < samples; i+=2){
+	//int i;
+	//for (i=0; i < samples; i+=2){
 		
-		push(xn,inputBuffer[i]); // stores the most recent sample in the circular buffer xn
+		//push(xn,inputBuffer[i]); // stores the most recent sample in the circular buffer xn
 		
-		outputBuffer[i] = fir_filter(xn); // filters the input and stores it in the left output channel
+		//outputBuffer[i] = fir_filter(xn); // filters the input and stores it in the left output channel
 		
-		outputBuffer[i+1] = inputBuffer[i+1]; // zeros out the right output channel
-	}
+		//outputBuffer[i+1] = inputBuffer[i+1]; // zeros out the right output channel
+	//}
 	return DSP_PROCESS_SUCCESS;
 }
