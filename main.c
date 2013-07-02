@@ -90,7 +90,6 @@ int main(int argc, char **argv)
 	PRN("DSP Status is: %d .\nPress any key to end.", (int) dspThreadReturn);
 	c=getch();
 	endwin();
-
 	return status;
 }
 
