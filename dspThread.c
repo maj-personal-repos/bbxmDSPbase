@@ -89,7 +89,7 @@ void *ioProcessing(void *envByRef, void *apPtr){
     DBG( "Starting IO Processing...\n" );
 
 	// Process a block just to start the DSP and skip the first frame
-    dspBlockProcess((short *)(*ap).outputBuffer, (short *)(*ap).outputBuffer, xn, (*ap).blksize/2);
+    dspBlockProcess((short *)(*ap).outputBuffer, (short *)(*ap).outputBuffer, xn, (*ap).blksize/2, &(*envPtr).filter_on, &(*envPtr).volume );
 
     DBG( "Entering dspThread processing loop...\n" );
 
@@ -122,7 +122,7 @@ void *ioProcessing(void *envByRef, void *apPtr){
 		
 		// Audio process
 		//  passing the data as short since we are processing 16-bit audio.
-		dspBlockProcess((short *)(*ap).outputBuffer, (short *)(*ap).inputBuffer, xn, (*ap).blksize/2);
+		dspBlockProcess((short *)(*ap).outputBuffer, (short *)(*ap).inputBuffer, xn, (*ap).blksize/2, &(*envPtr).filter_on, &(*envPtr).volume);
 
 		// Write output buffer into ALSA output device
 		errcnt = 0;	
