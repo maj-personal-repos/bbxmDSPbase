@@ -143,6 +143,11 @@ void *ioProcessing(void *envByRef, void *apPtr){
 			snd_pcm_writei((*ap).pcm_output_handle, (*ap).outputBuffer, (*ap).exact_bufsize);
 		}
     }
+	
+	destroyBuffer(xn);
+	free(xn);
+	free(filter_on);
+	free(volume);
 
     DBG( "Exited IO Processing loop\n" );
     return status;

@@ -15,5 +15,6 @@ void initBuffer(buffer* buffer);
 void push(buffer* buffer,short value);
 short pop(buffer* buffer);
 short readn(buffer* buffer, int Xn);
+void destroyBuffer(buffer* buffer);
 
 #endif

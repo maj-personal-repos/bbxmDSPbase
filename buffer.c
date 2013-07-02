@@ -23,3 +23,7 @@ short pop(buffer* buffer){
 short readn(buffer* buffer, int Xn){
 	return buffer->buff[(buffer->index + (~Xn)) & BUFF_SIZE_MASK];
 }
+
+void destroyBuffer(buffer* buffer){
+	free(buffer->buff);
+}
