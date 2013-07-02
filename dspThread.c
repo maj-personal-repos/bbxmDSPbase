@@ -83,8 +83,14 @@ void *ioProcessing(void *envByRef, void *apPtr){
     double * volume = malloc(sizeof(double));
     int i;
     
-    buffer *xn = malloc(sizeof(buffer)); // Define circular buffers and allocate memor
-    initBuffer(xn); // Initialize circular buffer
+    buffer *xnL = malloc(sizeof(buffer)); // Define circular buffers and allocate memory left channel xn
+    buffer *xnR = malloc(sizeof(buffer)); // Define circular buffers and allocate memory right channel xn
+    buffer *ynL = malloc(sizeof(buffer)); // Define circular buffers and allocate memory left channel yn
+    buffer *ynR = malloc(sizeof(buffer)); // Define circular buffers and allocate memory right channel yn
+    initBuffer(xnL); // Initialize circular buffer
+    initBuffer(xnR); // Initialize circular buffer
+    initBuffer(ynL); // Initialize circular buffer
+    initBuffer(ynR); // Initialize circular buffer
     *filter_on = (*envPtr).filter_on;
     *volume = (*envPtr).volume;
     
@@ -93,7 +99,7 @@ void *ioProcessing(void *envByRef, void *apPtr){
     DBG( "Starting IO Processing...\n" );
 
 	// Process a block just to start the DSP and skip the first frame
-    dspBlockProcess((short *)(*ap).outputBuffer, (short *)(*ap).outputBuffer, xn, (*ap).blksize/2, filter_on, volume );
+    dspBlockProcess((short *)(*ap).outputBuffer, (short *)(*ap).outputBuffer, xnL, xnR, (*ap).blksize/2, filter_on, volume );
 
     DBG( "Entering dspThread processing loop...\n" );
 
@@ -130,7 +136,7 @@ void *ioProcessing(void *envByRef, void *apPtr){
 		
 		// Audio process
 		//  passing the data as short since we are processing 16-bit audio.
-		dspBlockProcess((short *)(*ap).outputBuffer, (short *)(*ap).inputBuffer, xn, (*ap).blksize/2, filter_on, volume);
+		dspBlockProcess((short *)(*ap).outputBuffer, (short *)(*ap).inputBuffer, xnL, xnR, (*ap).blksize/2, filter_on, volume);
 
 		// Write output buffer into ALSA output device
 		errcnt = 0;	
@@ -144,8 +150,14 @@ void *ioProcessing(void *envByRef, void *apPtr){
 		}
     }
 	
-	destroyBuffer(xn);
-	free(xn);
+	destroyBuffer(xnL);
+	free(xnL);
+	destroyBuffer(xnR);
+	free(xnR);
+	destroyBuffer(ynL);
+	free(ynL);
+	destroyBuffer(ynR);
+	free(ynR);
 	free(filter_on);
 	free(volume);
 
