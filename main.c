@@ -32,6 +32,7 @@
 #include <ncurses.h> // This lets us create a text-based user interface
 #include "dspThread.h" // DSP thread definitions
 #include "debug.h" // DBG and ERR macros
+#include "audioIO.h" // Audio IO definitions
 
 /*
 	Global variables
@@ -173,7 +174,7 @@ void print_menu(WINDOW *menu_win, int highlight)
 {
 	int x, y, i;	
 
-	mvwprintw(menu_win, 1, 2, "Low Pass FIR Filter, fc = 4000 Hz");
+	mvwprintw(menu_win, 1, 2, "Low Pass FIR Filter, fc = %d Hz", SAMPLE_RATE);
 	mvwprintw(menu_win, 2, 2, "Left Channel");
 	mvwprintw(menu_win, 3, 2, "_________________________________");
 	x = 2;

@@ -150,6 +150,8 @@ void *ioProcessing(void *envByRef, void *apPtr){
 		}
     }
 	
+	
+	// Free up resources
 	destroyBuffer(xnL);
 	free(xnL);
 	destroyBuffer(xnR);
