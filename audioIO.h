@@ -16,7 +16,7 @@
 #define	SOUND_DEVICE	"plughw:0,0" // Use for line in and out
 
 //* The sample rate of the audio codec **
-#define     SAMPLE_RATE      8000
+#define     SAMPLE_RATE      44100
 
 //* The gain (0-100) of the left channel **
 #define     LEFT_GAIN        100
