@@ -5,7 +5,7 @@
 #include "dspProcess.h"
 
 const int BL = 513;
-const int16_T B[513] = {
+const short B[513] = {
         0,      0,      0,      0,      0,      0,      0,      0,      0,
         0,      0,      0,      0,      0,      0,      0,      0,      0,
         0,      0,      0,      0,      0,      0,      0,      0,      0,
